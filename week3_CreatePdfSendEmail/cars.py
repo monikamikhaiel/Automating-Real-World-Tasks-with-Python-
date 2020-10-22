@@ -47,10 +47,13 @@ def process_data(data):
     else:
       pop_year[item["year"]]+=item["total_sales"]
 #  print(pop_year)
-  pop_year_sort=sorted(pop_year.items(), key=operator.itemgetter(1),reverse=True)
+#  pop_year_sort=sorted(pop_year.items(), key=operator.itemgetter(1),reverse=True)
  # print(pop_year_sort)
-  year=next(iter(pop_year_sort))
-  sales=pop_year_sort[0]
+ # year=next(iter(pop_year_sort))
+  #sales=pop_year_sort[0]
+  
+  popular_car_year = max(pop_year.items(), key=operator.itemgetter(1))
+  year, sales = popular_car_year
   summary = [
     "The {} generated the most revenue: ${}".format(
       format_car(max_revenue["car"]), max_revenue["revenue"]),
@@ -77,17 +80,18 @@ def main(argv):
   #print(sorted(data, key=lambda o:o["total_sales"],reverse=True))
   # TODO: turn this into a PDF report
   labels=[]
-  data=[]
+  data_=[]
   for item in data:
     labels.append(format_car(item["car"].split("(")[0]))
-    data.append(item["total_sales"])
+    data_.append(item["total_sales"])
 
   reports.generate("/tmp/cars.pdf","Sales summary for lat month",summary[0]+"<br/>"+
   summary[1]+ "<br/>"+summary[2],
+#  additional_info = "<br/>".join(summary)
   cars_dict_to_table(sorted(data, key=lambda o:o["total_sales"],reverse=True))
-  ,data,labels)
+  ,data_,labels)
   # TODO: send the PDF report as an email attachment
-  m=emails.generate("automation@example.com","student-04-e871818b3675@example.com"
+  m=emails.generate("automation@example.com","@example.com"
     ,"Sales summary for last month",summary[0]+"\n"+
   summary[1]+"\n"+summary[2],"/tmp/cars.pdf")
   emails.send(m)
