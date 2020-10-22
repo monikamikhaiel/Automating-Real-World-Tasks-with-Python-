@@ -11,10 +11,9 @@ def generate_report(path, title, paragraph):
   styles = getSampleStyleSheet()
   report_title=Paragraph(title,styles["h1"])
   empty_line = Spacer(1,20)
-  report_data=[]
+  lines=[]
   for Dict in paragraph:
-    line="name:"+Dict["name"]+"\n"+"weight:"+Dict["weight"]+"lbs"+"\n"
-    report_data.append(Paragraph(line, styles["h2"]))
-    report_data.append(Spacer(1,20))
+    lines.append("name: "+Dict["name"]+"<br/>"+"weight: "+str(Dict["weight"])+" lbs"+"<br/>")
+  report_data=Paragraph("<br/>".join(lines))
   report.build([report_title,empty_line,report_data])
 
