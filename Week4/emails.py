@@ -2,6 +2,15 @@ from email.message import EmailMessage
 import smtplib
 import mimetypes
 import os
+def generate_errorReport(sender,recepient,subject,body):
+## get the attachement type
+## prepare the message
+  message=EmailMessage()
+  message["From"]=sender
+  message["To"]=recepient
+  message["Subject"]=subject
+  message.set_content(body)
+  return message
 def generate_email(sender,recepient,subject,body,attach_path):
 ## get the attachement type
   attach_filename=os.path.basename(attach_path)
@@ -13,7 +22,7 @@ def generate_email(sender,recepient,subject,body,attach_path):
   message["To"]=recepient
   message["Subject"]=subject
   message.set_content(body)
-  with open(attach,"rb") as f:
+  with open(attach_path,"rb") as f:
     message.add_attachment(f.read(),
       maintype=mimetype,subtype=subtype,filename=attach_filename)
   return message 
